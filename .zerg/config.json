@@ -1,0 +1,17 @@
+{
+  "project": "ciso-claude-toolkit",
+  "version": "0.1.0",
+  "initialized": "2026-03-18",
+  "mode": "discovery",
+  "workers": {
+    "max": 3,
+    "default": 1
+  },
+  "security": {
+    "level": "standard",
+    "rules": true
+  },
+  "languages": ["markdown"],
+  "frameworks": [],
+  "type": "prompt-toolkit"
+}
