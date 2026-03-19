@@ -1,0 +1,15 @@
+# Slide 4: Where the number comes from
+
+The number comes from a fault tree. If you have done root cause analysis on incidents, you have seen fault trees before. They map the paths from a triggering event to a bad outcome, and they assign probabilities to each node.
+
+The core formula is this: for any single exposure path, the probability of a breach equals the probability of the triggering event multiplied by the probability of each control failure along the path. A user pastes PII into a prompt. The DLP filter misses it. The API connection does not strip sensitive fields. The vendor stores the data in a training pipeline. Each of those is a node with a failure probability. Multiply them together and you get the path probability.
+
+Most systems have multiple exposure paths. The user could paste data directly. The system could pull data through an API integration. A prompt injection could extract data from the context window. Each path is independent. To aggregate across paths, you use the complement method: the probability of at least one path failing equals one minus the product of one minus each individual path probability. If you have three paths at 0.05% each, the combined probability is not 0.15%. It is slightly less, because the complement method accounts for the fact that the paths are not additive at the tails.
+
+Now scale that to users. This is where the numbers get interesting. The user-driven risk formula says: the annualized probability equals one minus the quantity one minus the per-user-per-interaction probability, raised to the power of the number of interactions per year across all users.
+
+What happens at 50 users versus 100 users? At 50 users, each making roughly 5 interactions per day, you get about 65,000 interactions per year. At a per-interaction failure probability of 0.001%, the annualized probability of at least one exposure event is around 5%. Double the users to 100 and the annual probability rises to about 10%. The relationship is not linear. It follows the complement curve, which flattens as the number gets high. Going from 10 users to 50 has a bigger marginal impact than going from 200 to 240.
+
+I want to be direct about the data inputs. No empirical dataset exists for enterprise LLM breach rates. We do not have five years of LLM incident data the way we have five years of email breach data. The failure probabilities I used come from two sources: SaaS analogs, meaning the known failure rates of DLP tools, access controls, and API security configurations in existing enterprise applications, and the Verizon DBIR for error-driven and misuse-driven breach rates in comparable technology categories.
+
+Are those exact matches? No. They are the closest analogs available. If your numbers are different, show me the model. I will update mine. The goal is not to be precisely right. The goal is to be approximately right in a way that supports a risk-based decision, because the alternative is making the decision with no numbers at all, and that is how most organizations are doing it right now.
